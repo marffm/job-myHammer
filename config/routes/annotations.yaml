@@ -1,0 +1,3 @@
+controllers:
+    resource: ../../src/MyHammer/Infrastructure/Controller/
+    type: annotation
