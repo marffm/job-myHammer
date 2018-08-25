@@ -15,7 +15,13 @@
         "symfony/yaml": "*"
     },
     "require-dev": {
-        "symfony/dotenv": "*"
+        "symfony/dotenv": "*",
+        "phpstan/phpstan": "^0.9.2",
+        "pdepend/pdepend" : "^2.5.0",
+        "zendframework/zend-coding-standard": "^1.0",
+        "squizlabs/php_codesniffer": "*",
+        "roave/security-advisories": "dev-master",
+        "phpunit/phpunit": "^7"
     },
     "config": {
         "preferred-install": {
@@ -50,7 +56,16 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "check": [
+          "@cs-check",
+          "@test",
+          "@analyze"
+        ],
+        "analyze": "phpstan analyse ./src --level max",
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf",
+        "test": "phpunit --colors=always"
     },
     "conflict": {
         "symfony/symfony": "*"
