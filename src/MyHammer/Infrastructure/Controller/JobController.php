@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace App\MyHammer\Infrastructure\Controller;
 
+use App\MyHammer\Infrastructure\Helper\JsonResponseFormatter;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class JobController extends FOSRestController
 {
@@ -18,13 +20,27 @@ class JobController extends FOSRestController
      */
     public function insertJob(Request $request): View
     {
+        $body = json_decode($request->getContent(), true);
+        $params = $body['data'];
 
-        $service = $this->get('service.InsertNewJob');
+        try {
+            $insertAction = $this->get('action.InsertJobAction');
+            $response = $insertAction->insertJob($params);
 
-        $test = $service->insertJob();
-
-
-        return $this->view($test, '200');
-        //echo '<pre>' .json_encode($test). '</pre>';die;
+            return $this->view(
+                JsonResponseFormatter::successResponse($response),
+                Response::HTTP_OK
+            );
+        } catch (\InvalidArgumentException $error) {
+            return $this->view(
+                JsonResponseFormatter::errorResponse($error->getMessage()),
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        } catch (\RuntimeException $error) {
+            return $this->view(
+                JsonResponseFormatter::errorResponse($error->getMessage()),
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
     }
 }

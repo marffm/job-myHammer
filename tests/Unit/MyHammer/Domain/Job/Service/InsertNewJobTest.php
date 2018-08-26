@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace App\Tests\Unit\MyHammer\Domain\Job\Service;
 
 use App\MyHammer\Domain\Job\DTOInterface\InsertNewJobDTOInterface;
+use App\MyHammer\Domain\Job\RepositoryInterface\HttpZipCodeInformationInterface;
 use App\MyHammer\Domain\Job\RepositoryInterface\JobRepositoryInterface;
 use App\MyHammer\Domain\Job\RepositoryInterface\ServiceRepositoryInterface;
 use App\MyHammer\Domain\Job\Service\InsertNewJob;
 use App\MyHammer\Domain\Service\Entity\Service;
+use App\MyHammer\Infrastructure\HTTP\HttpZipCodeInformation;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -28,6 +30,9 @@ class InsertNewJobTest extends TestCase
     /** @var MockObject */
     private $serviceEntity;
 
+    /** @var MockObject */
+    private $httpZipCode;
+
     public function setUp(): void
     {
         $this->jobRepository = $this->getMockBuilder(JobRepositoryInterface::class)->getMock();
@@ -36,13 +41,16 @@ class InsertNewJobTest extends TestCase
 
         $this->insertNewJobDTO = $this->getMockBuilder(InsertNewJobDTOInterface::class)->getMock();
 
+        $this->httpZipCode = $this->getMockBuilder(HttpZipCodeInformationInterface::class)->getMock();
+
 
         $this->serviceEntity = $this->getMockBuilder(Service::class)
             ->disableOriginalConstructor()->getMock();
 
         $this->insertNewJob = new InsertNewJob(
             $this->jobRepository,
-            $this->serviceRepository
+            $this->serviceRepository,
+            $this->httpZipCode
         );
     }
 
@@ -57,6 +65,8 @@ class InsertNewJobTest extends TestCase
         $this->insertNewJobDTO->method('getCity')->willReturn('Unit Test City');
         $this->insertNewJobDTO->method('getDescription')->willReturn('This is a simple Description');
         $this->insertNewJobDTO->method('getExecutionDate')->willReturn('2018-09-10');
+
+        $this->httpZipCode->method('getGermanZipCodeInformation')->willReturn(['country' => 'Germany']);
 
         $this->serviceRepository->method('findServiceById')->willReturn($this->serviceEntity);
 
@@ -75,6 +85,20 @@ class InsertNewJobTest extends TestCase
     {
         $this->insertNewJobDTO->method('getServiceId')->willReturn(123);
         $this->serviceRepository->method('findServiceById')->willReturn(null);
+
+        $this->insertNewJob->insertJob($this->insertNewJobDTO);
+    }
+
+    /**
+     * @test
+     * @expectedException \App\MyHammer\Domain\Job\Exception\ZipCodeNotAllowed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function shouldThrowZipCodeNotAllowedException(): void
+    {
+        $this->insertNewJobDTO->method('getServiceId')->willReturn(123);
+        $this->serviceRepository->method('findServiceById')->willReturn($this->serviceEntity);
+        $this->httpZipCode->method('getGermanZipCodeInformation')->willReturn(null);
 
         $this->insertNewJob->insertJob($this->insertNewJobDTO);
     }

@@ -41,12 +41,12 @@ class Service
 
     /**
      * Service constructor.
-     * @param null|string $serviceId
+     * @param int $serviceId
      * @param string $name
      */
-    public function __construct(?string $serviceId, string $name)
+    public function __construct(int $serviceId, string $name)
     {
-        $this->serviceId = null !== $serviceId ?? hexdec(uniqid());
+        $this->serviceId = $serviceId;
         $this->name = $name;
         $this->createdAt = new \DateTime('now');
     }

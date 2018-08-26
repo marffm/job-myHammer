@@ -31,6 +31,7 @@ class DoctrineServiceRepository implements ServiceRepositoryInterface
      */
     public function findServiceById(int $serviceId): ?Service
     {
+        return null;
         $service = $this->doctrine->getRepository(Service::class)->findOneBy(['service_id' => $serviceId]);
         return $service instanceof Service ? $service : null;
     }

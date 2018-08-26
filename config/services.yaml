@@ -32,16 +32,20 @@ services:
     sensio_framework_extra.view.listener:
         alias: Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener
 
-
+    guzzle.client:
+        class: GuzzleHttp\Client
 
     # Actions
-
+    action.InsertJobAction:
+        class: App\MyHammer\Application\Action\InsertJobAction
+        public: true
+        arguments: ['@service.InsertNewJob']
 
     # Services
     service.InsertNewJob:
         class: App\MyHammer\Domain\Job\Service\InsertNewJob
         public: true
-        arguments: ['@job.repository', '@service.repository']
+        arguments: ['@job.repository', '@service.repository', '@http.ZipCodeInformation']
 
 
     # Repositories
@@ -54,3 +58,9 @@ services:
         class: App\MyHammer\Infrastructure\Repository\DoctrineServiceRepository
         public: true
         arguments: ['@doctrine']
+
+    # Http
+    http.ZipCodeInformation:
+        class: App\MyHammer\Infrastructure\HTTP\HttpZipCodeInformation
+        public: true
+        arguments: ['@guzzle.client']
