@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\MyHammer\Domain\Job\Entity;
 
-use App\MyHammer\Domain\DTOInterface\InsertNewJobDTOInterface;
+use App\MyHammer\Domain\Job\DTOInterface\InsertNewJobDTOInterface;
 use App\MyHammer\Domain\Job\Entity\Job;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

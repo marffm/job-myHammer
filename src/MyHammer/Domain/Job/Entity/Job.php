@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\MyHammer\Domain\Job\Entity;
 
-use App\MyHammer\Domain\DTOInterface\InsertNewJobDTOInterface;
+use App\MyHammer\Domain\Job\DTOInterface\InsertNewJobDTOInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

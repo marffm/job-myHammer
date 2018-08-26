@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\MyHammer\Domain\Job\Service;
 
-use App\MyHammer\Domain\DTOInterface\InsertNewJobDTOInterface;
+use App\MyHammer\Domain\Job\DTOInterface\InsertNewJobDTOInterface;
 use App\MyHammer\Domain\Job\RepositoryInterface\JobRepositoryInterface;
 use App\MyHammer\Domain\Job\RepositoryInterface\ServiceRepositoryInterface;
 use App\MyHammer\Domain\Job\Service\InsertNewJob;

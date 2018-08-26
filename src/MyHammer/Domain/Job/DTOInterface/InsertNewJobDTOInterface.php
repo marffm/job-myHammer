@@ -1,5 +1,5 @@
 <?php
-namespace App\MyHammer\Domain\DTOInterface;
+namespace App\MyHammer\Domain\Job\DTOInterface;
 
 interface InsertNewJobDTOInterface
 {
