@@ -18,7 +18,7 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php,MyHammer}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -31,3 +31,26 @@ services:
 
     sensio_framework_extra.view.listener:
         alias: Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener
+
+
+
+    # Actions
+
+
+    # Services
+    service.InsertNewJob:
+        class: App\MyHammer\Domain\Job\Service\InsertNewJob
+        public: true
+        arguments: ['@job.repository', '@service.repository']
+
+
+    # Repositories
+    job.repository:
+        class: App\MyHammer\Infrastructure\Repository\DoctrineJobRepository
+        public: true
+        arguments: ['@doctrine']
+
+    service.repository:
+        class: App\MyHammer\Infrastructure\Repository\DoctrineServiceRepository
+        public: true
+        arguments: ['@doctrine']

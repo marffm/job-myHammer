@@ -19,6 +19,4 @@ class TestController extends FOSRestController
     {
         return $this->view(['test' => 'return an array'], Response::HTTP_OK);
     }
-
-
 }

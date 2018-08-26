@@ -3,10 +3,10 @@
     <rule ref="./vendor/zendframework/zend-coding-standard/ruleset.xml"/>
 
     <rule ref="Generic.Files.LineLength.TooLong">
-        <exclude-pattern>test</exclude-pattern>
+        <exclude-pattern>tests</exclude-pattern>
     </rule>
 
     <!-- Paths to check -->
     <file>src</file>
-    <file>test</file>
+    <file>tests</file>
 </ruleset>

@@ -39,4 +39,6 @@ services:
       volumes:
         - .:/application
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+      environment:
+        DATABASE_URL: mysql://root:123456@mariadb:3306/services_db
 
