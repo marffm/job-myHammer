@@ -38,7 +38,7 @@ class Job
     private $title;
 
     /**
-     * @var int
+     * @var string
      * @ORM\Column(name="zip_code", type="string", nullable=false)
      */
     private $zipCode;
@@ -170,7 +170,7 @@ class Job
     }
 
     /**
-     * @return null|string
+     * @return string
      */
     public function getUpdatedAt(): string
     {

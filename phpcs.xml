@@ -4,6 +4,7 @@
 
     <rule ref="Generic.Files.LineLength.TooLong">
         <exclude-pattern>tests</exclude-pattern>
+        <exclude-pattern>src/Migrations</exclude-pattern>
     </rule>
 
     <!-- Paths to check -->

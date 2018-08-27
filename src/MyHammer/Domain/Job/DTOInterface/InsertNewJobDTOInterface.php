@@ -16,5 +16,4 @@ interface InsertNewJobDTOInterface
     public function getExecutionDate(): string;
 
     public function getIdUser(): int;
-
 }

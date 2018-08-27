@@ -41,11 +41,21 @@ services:
         public: true
         arguments: ['@service.InsertNewJob']
 
+    action.SearchJobAction:
+        class: App\MyHammer\Application\Action\SearchJobAction
+        public: true
+        arguments: ['@service.SearchJob']
+
     # Services
     service.InsertNewJob:
         class: App\MyHammer\Domain\Job\Service\InsertNewJob
         public: true
         arguments: ['@job.repository', '@service.repository', '@http.ZipCodeInformation']
+
+    service.SearchJob:
+        class: App\MyHammer\Domain\Job\Service\SearchJob
+        public: true
+        arguments: ['@job.repository']
 
 
     # Repositories

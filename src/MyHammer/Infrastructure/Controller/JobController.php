@@ -51,7 +51,8 @@ class JobController extends FOSRestController
 
 
     /**
-     * @Rest\Get("/findJob/{job_id}")
+     * @Rest\Get("/findJobs", name="FindJob")
+     * @Rest\QueryParam(name="job_id")
      * @Rest\QueryParam(name="id_user")
      * @Rest\QueryParam(name="service_id")
      * @Rest\QueryParam(name="zipcode")
@@ -60,17 +61,18 @@ class JobController extends FOSRestController
      */
     public function findJob(Request $request): View
     {
-
         $params = [
             'id' => $request->get('job_id'),
             'service_id' => $request->get('service_id'),
-            'id_user' => $request->get('id_user'),
-            'zipcode' => $request->get('zipcode')
+            'zipcode' => $request->get('zipcode'),
+            'id_user' => $request->get('id_user')
         ];
-        echo '<pre>' .json_encode($params). '</pre>';die;
+
+        echo '<pre>' .json_encode($params). '</pre>';
+        die;
 
         try {
-
+            $searchAction = $this->get('action.SearchJobAction');
         } catch (\InvalidArgumentException $error) {
             return $this->view(
                 JsonResponseFormatter::errorResponse($error->getMessage()),
@@ -82,8 +84,5 @@ class JobController extends FOSRestController
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-
     }
-
-
 }
