@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace App\MyHammer\Application\DTO;
 
-use App\MyHammer\Application\Helper\ZipCodeVerifier;
 use App\MyHammer\Domain\Job\DTOInterface\InsertNewJobDTOInterface;
-use App\MyHammer\Infrastructure\HTTP\HttpZipCodeInformation;
 
 class InsertNewJobDTO implements InsertNewJobDTOInterface
 {
@@ -19,7 +17,7 @@ class InsertNewJobDTO implements InsertNewJobDTOInterface
      */
     private $title;
     /**
-     * @var int
+     * @var string
      */
     private $zipCode;
     /**
@@ -34,23 +32,29 @@ class InsertNewJobDTO implements InsertNewJobDTOInterface
      * @var string
      */
     private $executionDate;
+    /**
+     * @var int
+     */
+    private $idUser;
 
     /**
      * InsertNewJobDTO constructor.
      * @param int $serviceId
      * @param string $title
-     * @param int $zipCode
+     * @param string $zipCode
      * @param string $city
      * @param string $description
      * @param string $executionDate
+     * @param int $idUser
      */
     public function __construct(
         int $serviceId,
         string $title,
-        int $zipCode,
+        string $zipCode,
         string $city,
         string $description,
-        string $executionDate
+        string $executionDate,
+        int $idUser
     ) {
         $this->assertTitle($title);
 
@@ -60,6 +64,7 @@ class InsertNewJobDTO implements InsertNewJobDTOInterface
         $this->city = $city;
         $this->description = $description;
         $this->executionDate = $executionDate;
+        $this->idUser = $idUser;
     }
 
     /**
@@ -79,9 +84,9 @@ class InsertNewJobDTO implements InsertNewJobDTOInterface
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getZipCode(): int
+    public function getZipCode(): string
     {
         return $this->zipCode;
     }
@@ -111,6 +116,15 @@ class InsertNewJobDTO implements InsertNewJobDTOInterface
     }
 
     /**
+     * @return int
+     */
+    public function getIdUser(): int
+    {
+        return $this->idUser;
+    }
+
+
+    /**
      * @param string $title
      */
     private function assertTitle(string $title): void
@@ -126,12 +140,13 @@ class InsertNewJobDTO implements InsertNewJobDTOInterface
     public static function fromArray(array $params): self
     {
         return new self(
-            $params['service_id'],
+            (int)$params['service_id'],
             $params['title'],
             $params['zipcode'],
             $params['city'],
             $params['description'],
-            $params['execution_date']
+            $params['execution_date'],
+            (int)$params['id_user']
         );
     }
 }

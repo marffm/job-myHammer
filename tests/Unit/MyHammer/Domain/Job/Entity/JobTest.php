@@ -24,6 +24,7 @@ class JobTest extends TestCase
         $this->insertNewJobDTO->method('getCity')->willReturn('Unit Test City');
         $this->insertNewJobDTO->method('getDescription')->willReturn('This is a simple Description');
         $this->insertNewJobDTO->method('getExecutionDate')->willReturn('2018-09-10');
+        $this->insertNewJobDTO->method('getIdUser')->willReturn('123456');
     }
 
     /**
@@ -34,13 +35,15 @@ class JobTest extends TestCase
         $jobEntity = Job::fromInsertNewJobDTO($this->insertNewJobDTO);
 
         $createdAt = new \DateTime('now');
+        $updatedAt = new \DateTime('now');
 
-        $this->assertEquals(123, $jobEntity->getServiceId());
         $this->assertEquals('This is a test.', $jobEntity->getTitle());
-        $this->assertEquals(10115, $jobEntity->getZipCode());
+        $this->assertEquals('10115', $jobEntity->getZipCode());
         $this->assertEquals('Unit Test City', $jobEntity->getCity());
         $this->assertEquals('This is a simple Description', $jobEntity->getDescription());
         $this->assertEquals('2018-09-10 00:00', $jobEntity->getExecutionDate());
         $this->assertEquals($createdAt->format('Y-m-d H:i'), $jobEntity->getCreatedAt());
+        $this->assertEquals($updatedAt->format('Y-m-d H:i'), $jobEntity->getCreatedAt());
+        $this->assertEquals(123456, $jobEntity->getIdUser());
     }
 }

@@ -35,7 +35,7 @@ class Service
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      */
     private $updatedAt;
 
@@ -49,6 +49,7 @@ class Service
         $this->serviceId = $serviceId;
         $this->name = $name;
         $this->createdAt = new \DateTime('now');
+        $this->updatedAt = new \DateTime('now');
     }
 
     /**

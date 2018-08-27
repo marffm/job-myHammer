@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace App\MyHammer\Infrastructure\Controller;
 
 use App\MyHammer\Infrastructure\Helper\JsonResponseFormatter;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -41,6 +41,49 @@ class JobController extends FOSRestController
                 JsonResponseFormatter::errorResponse($error->getMessage()),
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
+        } catch (\Exception $error) {
+            return $this->view(
+                JsonResponseFormatter::errorResponse($error->getMessage()),
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
+
+
+    /**
+     * @Rest\Get("/findJob/{job_id}")
+     * @Rest\QueryParam(name="id_user")
+     * @Rest\QueryParam(name="service_id")
+     * @Rest\QueryParam(name="zipcode")
+     * @param Request $request
+     * @return View
+     */
+    public function findJob(Request $request): View
+    {
+
+        $params = [
+            'id' => $request->get('job_id'),
+            'service_id' => $request->get('service_id'),
+            'id_user' => $request->get('id_user'),
+            'zipcode' => $request->get('zipcode')
+        ];
+        echo '<pre>' .json_encode($params). '</pre>';die;
+
+        try {
+
+        } catch (\InvalidArgumentException $error) {
+            return $this->view(
+                JsonResponseFormatter::errorResponse($error->getMessage()),
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        } catch (\RuntimeException $error) {
+            return $this->view(
+                JsonResponseFormatter::errorResponse($error->getMessage()),
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+
+    }
+
+
 }

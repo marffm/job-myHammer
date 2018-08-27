@@ -7,10 +7,10 @@ class ZipCodeNotAllowed extends \InvalidArgumentException
 {
 
     /**
-     * @param int $zipCode
+     * @param string $zipCode
      * @return ZipCodeNotAllowed
      */
-    public static function fromZipCodeGerman(int $zipCode): self
+    public static function fromZipCodeGerman(string $zipCode): self
     {
         return new self(
             sprintf('This Zip Code %s is not a German', $zipCode)

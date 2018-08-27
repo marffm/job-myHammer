@@ -24,16 +24,16 @@ class HttpZipCodeInformation implements HttpZipCodeInformationInterface
     }
 
     /**
-     * @param int $zipCode
+     * @param string $zipCode
      * @return array|null
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getGermanZipCodeInformation(int $zipCode): ?array
+    public function getGermanZipCodeInformation(string $zipCode): ?array
     {
         try {
             $response = $this->httpClient->request(
                 'GET',
-                static::URI . (string)$zipCode
+                static::URI . $zipCode
             );
         } catch (ClientException $error) {
             $response = $error->getResponse();

@@ -68,6 +68,8 @@ class InsertNewJobTest extends TestCase
 
         $this->httpZipCode->method('getGermanZipCodeInformation')->willReturn(['country' => 'Germany']);
 
+        $this->serviceEntity->method('getServiceId')->willReturn(123);
+
         $this->serviceRepository->method('findServiceById')->willReturn($this->serviceEntity);
 
         $response = $this->insertNewJob->insertJob($this->insertNewJobDTO);

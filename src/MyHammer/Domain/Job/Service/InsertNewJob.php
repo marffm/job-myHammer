@@ -51,12 +51,12 @@ class InsertNewJob
      */
     public function insertJob(InsertNewJobDTOInterface $insertNewJobDTO): Job
     {
-
-        $this->checkServiceExists($insertNewJobDTO->getServiceId());
+        $service = $this->checkServiceExists($insertNewJobDTO->getServiceId());
 
         $this->checkZipCode($insertNewJobDTO->getZipCode());
 
         $newJob = Job::fromInsertNewJobDTO($insertNewJobDTO);
+        $newJob->setService($service);
 
         $this->jobRepository->store($newJob);
         return $newJob;
@@ -64,20 +64,21 @@ class InsertNewJob
 
     /**
      * @param int $serviceId
+     * @return Service
      */
-    private function checkServiceExists(int $serviceId): void
+    private function checkServiceExists(int $serviceId): Service
     {
         $service = $this->serviceRepository->findServiceById($serviceId);
         if (! $service instanceof Service) {
             throw NoServiceFoundException::fromId($serviceId);
         }
+        return $service;
     }
 
     /**
-     * @param int $zipCode
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @param string $zipCode
      */
-    private function checkZipCode(int $zipCode): void
+    private function checkZipCode(string $zipCode): void
     {
         $zipCodeInformation = $this->zipCodeInformation->getGermanZipCodeInformation($zipCode);
 

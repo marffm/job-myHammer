@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\MyHammer\Domain\Job\Entity;
 
 use App\MyHammer\Domain\Job\DTOInterface\InsertNewJobDTOInterface;
+use App\MyHammer\Domain\Service\Entity\Service;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,8 +25,9 @@ class Job
     private $id;
 
     /**
-     * @var int
-     * @ORM\Column(name="service_id", type="integer", nullable=false)
+     * @var Service
+     * @ORM\ManyToOne(targetEntity="App\MyHammer\Domain\Service\Entity\Service", cascade={"all"}, fetch="LAZY")
+     * @ORM\JoinColumn(name="service_id", referencedColumnName="service_id", nullable=false)
      */
     private $serviceId;
 
@@ -37,7 +39,7 @@ class Job
 
     /**
      * @var int
-     * @ORM\Column(name="zip_code", type="int", nullable=false)
+     * @ORM\Column(name="zip_code", type="string", nullable=false)
      */
     private $zipCode;
 
@@ -67,26 +69,32 @@ class Job
 
     /**
      * @var \DateTime
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      */
     private $updatedAt;
+    /**
+     * @var int
+     * @ORM\Column(name="id_user", type="integer")
+     */
+    private $idUser;
 
 
     public function __construct(
-        int $serviceId,
         string $title,
-        int $zipCode,
+        string $zipCode,
         string $city,
         string $description,
-        string $executionDate
+        string $executionDate,
+        int $idUser
     ) {
-        $this->serviceId = $serviceId;
         $this->title = $title;
         $this->zipCode = $zipCode;
         $this->city = $city;
         $this->description = $description;
         $this->executionDate = new \DateTime($executionDate);
         $this->createdAt = new \DateTime('now');
+        $this->updatedAt = new \DateTime('now');
+        $this->idUser = $idUser;
     }
 
     /**
@@ -98,11 +106,11 @@ class Job
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getServiceId(): int
+    public function getServiceId(): ?int
     {
-        return $this->serviceId;
+        return $this->serviceId instanceof Service ? $this->serviceId->getServiceId() : null;
     }
 
     /**
@@ -114,9 +122,9 @@ class Job
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getZipCode(): int
+    public function getZipCode(): string
     {
         return $this->zipCode;
     }
@@ -146,6 +154,14 @@ class Job
     }
 
     /**
+     * @return int
+     */
+    public function getIdUser(): int
+    {
+        return $this->idUser;
+    }
+
+    /**
      * @return string
      */
     public function getCreatedAt(): string
@@ -156,14 +172,18 @@ class Job
     /**
      * @return null|string
      */
-    public function getUpdatedAt(): ?string
+    public function getUpdatedAt(): string
     {
-        if (null !== $this->updatedAt && $this->updatedAt instanceof \DateTime) {
-            return $this->updatedAt->format('Y-m-d H:i');
-        }
-        return null;
+        return $this->updatedAt->format('Y-m-d H:i');
     }
 
+    /**
+     * @param Service $service
+     */
+    public function setService(Service $service): void
+    {
+        $this->serviceId = $service;
+    }
 
     /**
      * @param InsertNewJobDTOInterface $insertNewJobDTO
@@ -172,12 +192,12 @@ class Job
     public static function fromInsertNewJobDTO(InsertNewJobDTOInterface $insertNewJobDTO): self
     {
         return new self(
-            $insertNewJobDTO->getServiceId(),
             $insertNewJobDTO->getTitle(),
             $insertNewJobDTO->getZipCode(),
             $insertNewJobDTO->getCity(),
             $insertNewJobDTO->getDescription(),
-            $insertNewJobDTO->getExecutionDate()
+            $insertNewJobDTO->getExecutionDate(),
+            $insertNewJobDTO->getIdUser()
         );
     }
 }

@@ -7,11 +7,14 @@ interface InsertNewJobDTOInterface
 
     public function getTitle(): string;
 
-    public function getZipCode(): int;
+    public function getZipCode(): string;
 
     public function getCity(): string;
 
     public function getDescription(): string;
 
     public function getExecutionDate(): string;
+
+    public function getIdUser(): int;
+
 }
