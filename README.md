@@ -82,6 +82,6 @@ You can test the application running `composer check` inside the container's bas
 
 This command will run the test and some extension that ensure the quality of code.
 
-## Futures implementation
+## Future implementations
 The next steps for this application is create a method which allows us to check all the jobs inserted, following some criterias
 and passing some parameters as well as endpoints to insert and consult services.
