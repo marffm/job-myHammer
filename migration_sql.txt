@@ -1,0 +1,5 @@
+$this->addSql('INSERT INTO service (service_id, name, created_at) VALUES (804040 , "Sonstige Umzugsleistungen", NOW())');
+        $this->addSql('INSERT INTO service (service_id, name, created_at) VALUES (802030 , "Abtransport, Entsorgung und Entrumpelung", NOW())');
+        $this->addSql('INSERT INTO service (service_id, name, created_at) VALUES (411070 , "Fensterreinigung", NOW())');
+        $this->addSql('INSERT INTO service (service_id, name, created_at) VALUES (402020 , "Holzdielen schleifen", NOW())');
+        $this->addSql('INSERT INTO service (service_id, name, created_at) VALUES (108140 , "Kellersanierung", NOW())');
